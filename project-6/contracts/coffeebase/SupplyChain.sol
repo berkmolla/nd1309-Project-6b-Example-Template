@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.8;
 // Define a contract 'Supplychain'
 contract SupplyChain {
 
@@ -49,7 +49,7 @@ contract SupplyChain {
     State   itemState;  // Product State as represented in the enum above
     address distributorID;  // Metamask-Ethereum address of the Distributor
     address retailerID; // Metamask-Ethereum address of the Retailer
-    address consumerID; // Metamask-Ethereum address of the Consumer
+    address payable consumerID; // Metamask-Ethereum address of the Consumer
   }
 
   // Define 8 events with the same 8 state values and accept 'upc' as input argument
@@ -139,7 +139,7 @@ contract SupplyChain {
   // In the constructor set 'owner' to the address that instantiated the contract
   // and set 'sku' to 1
   // and set 'upc' to 1
-  constructor() public payable {
+  constructor() payable {
     owner = msg.sender;
     sku = 1;
     upc = 1;
@@ -148,18 +148,19 @@ contract SupplyChain {
   // Define a function 'kill' if required
   function kill() public {
     if (msg.sender == owner) {
-      selfdestruct(owner);
+      selfdestruct(payable(owner));
     }
   }
 
   // Define a function 'harvestItem' that allows a farmer to mark an item 'Harvested'
-  function harvestItem(uint _upc, address _originFarmerID, string _originFarmName, string _originFarmInformation, string  _originFarmLatitude, string  _originFarmLongitude, string  _productNotes) public 
+  function harvestItem(uint _upc, address _originFarmerID, string memory _originFarmName, string memory _originFarmInformation, string memory _originFarmLatitude, string memory  _originFarmLongitude, string memory _productNotes) public 
   {
     // Add the new item as part of Harvest
     
     // Increment sku
     sku = sku + 1;
     // Emit the appropriate event
+    emit Harvested(upc);
     
   }
 
@@ -224,12 +225,9 @@ contract SupplyChain {
 
   // Define a function 'shipItem' that allows the distributor to mark an item 'Shipped'
   // Use the above modifers to check if the item is sold
-  function shipItem(uint _upc) public 
-    // Call modifier to check if upc has passed previous supply chain stage
-    
-    // Call modifier to verify caller of this function
-    
-    {
+  // Call modifier to check if upc has passed previous supply chain stage
+  // Call modifier to verify caller of this function
+  function shipItem(uint _upc) public {
     // Update the appropriate fields
     
     // Emit the appropriate event
@@ -263,16 +261,16 @@ contract SupplyChain {
   }
 
   // Define a function 'fetchItemBufferOne' that fetches the data
-  function fetchItemBufferOne(uint _upc) public view returns 
+  function fetchItemBufferOne(uint _upc) public pure returns 
   (
   uint    itemSKU,
   uint    itemUPC,
   address ownerID,
   address originFarmerID,
-  string  originFarmName,
-  string  originFarmInformation,
-  string  originFarmLatitude,
-  string  originFarmLongitude
+  string memory  originFarmName,
+  string  memory originFarmInformation,
+  string  memory originFarmLatitude,
+  string  memory originFarmLongitude
   ) 
   {
   // Assign values to the 8 parameters
@@ -292,12 +290,12 @@ contract SupplyChain {
   }
 
   // Define a function 'fetchItemBufferTwo' that fetches the data
-  function fetchItemBufferTwo(uint _upc) public view returns 
+  function fetchItemBufferTwo(uint _upc) public pure returns 
   (
   uint    itemSKU,
   uint    itemUPC,
   uint    productID,
-  string  productNotes,
+  string memory productNotes,
   uint    productPrice,
   uint    itemState,
   address distributorID,
