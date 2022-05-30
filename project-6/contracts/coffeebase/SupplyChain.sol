@@ -301,6 +301,7 @@ contract SupplyChain {
             string memory originFarmLongitude
         )
     {
+      
         // Assign values to the 8 parameters
           itemSKU = items[_upc].sku;
           itemUPC = items[_upc].upc;
