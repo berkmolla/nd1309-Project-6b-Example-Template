@@ -57,7 +57,7 @@ App = {
 
     initWeb3: async function () {
         /// Find or Inject Web3 Provider
-        /// Modern dapp browsers...
+        // Modern dapp browsers...
         if (window.ethereum) {
             App.web3Provider = window.ethereum;
             try {
@@ -184,7 +184,8 @@ App = {
                 App.originFarmInformation, 
                 App.originFarmLatitude, 
                 App.originFarmLongitude, 
-                App.productNotes
+                App.productNotes,
+                {from: App.metamaskAccountID}
             );
         }).then(function(result) {
             $("#ftc-item").text(result);
