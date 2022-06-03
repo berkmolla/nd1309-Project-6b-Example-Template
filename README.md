@@ -110,3 +110,11 @@ See also the list of [contributors](https://github.com/your/project/contributors
 * Ganache-cli
 * Truffle
 * IPFS
+
+
+## Libraries
+hdwallet-provider - we're using this in order to be able to sign the transaction to the Infura endpoint and deploy to Rinkeby.
+
+ganache - used to create a local dev version of the Ethereum blockchain to be able to deploy/test contracts and have accounts with fake ETH created to be able to test all functionality we write code for.
+
+truffle - this is for running tests on the dev blockchain as well as running contract migrations /deployments to that local blockchain. 
